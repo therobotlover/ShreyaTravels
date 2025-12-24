@@ -45,6 +45,10 @@ Route::post('/seed-tour', function (Request $request) {
         '--force' => true,
     ]);
 
+    logger()->info('seed.tour.completed', [
+        'ip' => $request->ip(),
+    ]);
+
     return response()->json(['status' => 'ok']);
 })->middleware('throttle:seed-tour')->name('seed.tour');
 

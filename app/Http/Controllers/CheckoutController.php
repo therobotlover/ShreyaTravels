@@ -37,6 +37,14 @@ class CheckoutController extends Controller
         $booking->reference = 'ST-'.now()->format('Y').'-'.str_pad((string) $booking->id, 6, '0', STR_PAD_LEFT);
         $booking->save();
 
+        logger()->info('checkout.created', [
+            'booking_id' => $booking->id,
+            'tour_id' => $tour->id,
+            'user_id' => $request->user()->id,
+            'intent' => $data['intent'],
+            'total_amount' => $total,
+        ]);
+
         if ($data['intent'] === 'hold') {
             return response()->json([
                 'message' => __('messages.booking_held'),

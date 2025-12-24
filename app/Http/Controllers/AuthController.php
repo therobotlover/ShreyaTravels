@@ -32,6 +32,11 @@ class AuthController extends Controller
             $message->to($email)->subject(__('messages.otp_email_subject'));
         });
 
+        logger()->info('auth.otp.requested', [
+            'email' => $email,
+            'ip' => $request->ip(),
+        ]);
+
         return response()->json(['message' => __('messages.otp_sent')]);
     }
 
@@ -63,6 +68,12 @@ class AuthController extends Controller
 
         $user = User::firstOrCreate(['email' => $email]);
         Auth::login($user);
+
+        logger()->info('auth.otp.verified', [
+            'user_id' => $user->id,
+            'email' => $email,
+            'ip' => $request->ip(),
+        ]);
 
         return response()->json([
             'message' => __('messages.otp_verified'),
