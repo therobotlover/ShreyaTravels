@@ -2,7 +2,7 @@
 set -e
 
 if [ ! -f .env ]; then
-  cp .env.example.prod .env
+  cp .env.example .env
 fi
 
 if ! grep -q '^APP_KEY=base64:' .env; then
